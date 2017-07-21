@@ -1,0 +1,29 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:7.10
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          command: |
+            yarn test
+            yarn build
+      - deploy:
+          command: |
+            yarn add now
+            now () { .node_modules/.bin/now $@ }
+            now -t ${NOW_TOKEN} rm -y roll || echo "No deployments to remove"
+            NOW_URL=$(now --public -t ${NOW_TOKEN}) && now -t ${NOW_TOKEN} alias set ${NOW_URL} roll.now.sh
+
