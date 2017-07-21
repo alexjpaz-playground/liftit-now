@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "index.js",
+    "start": "node index.js",
+    "dev": "node dev.js",
     "build": "webpack",
     "test": "jest",
     "tdd": "jest --watch"
@@ -16,6 +17,7 @@
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1",
     "superagent": "^3.5.2",
-    "webpack": "^3.3.0"
+    "webpack": "^3.3.0",
+    "webpack-dev-server": "^2.5.1"
   }
 }
